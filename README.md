@@ -10,6 +10,16 @@
 
 ## ToDo
 
+- Analysis which packages to use to build further upon:
+
+https://github.com/Xilinx/DarwiNN
+
+https://github.com/DEAP/deap
+
+https://github.com/ahmedfgad/GeneticAlgorithmPython
+
+
+
 ## Tests
 
 ## Comparison to other tools, packages, competitors
