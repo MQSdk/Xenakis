@@ -10,7 +10,7 @@
 import os, sys
 scriptPath = os.path.realpath(os.path.dirname(sys.argv[0]))
 os.chdir(scriptPath)
-sys.path.append("./")
+sys.path.append("../")
 
 from vqe import ground_state_energy_VQE
 import random

@@ -23,7 +23,7 @@ Genetic algorithms are a class of meta-heuristic algorithms that are able to gen
 
 As an example, we have implemented a genetic algorithm to find a circuit for VQE, which finds the ground state of a molecule. We fix the initial state and final measurement steps, which are dictated by the problem formulation, but we let the genetic algorithm discover the Ansatz circuit, which will prepare the ground state. We do this by giving the algorithm a collection of various quantum gates (around 30 in total), each with a 6-bit identifier. Then we add some additional bits to this identifier to specify which qubits the given gate ought to be applied to. We can then construct a genetic representation of a quantum circuit by appending some number of gate representations.
 
-![fig1](img/genome.png)
+![fig1](../img/genome.png)
 
 We create a random population of circuits, which then go through the evolutionary process:
 1. Fitness: Each circuit is ranked by a fitness function. We use the energy that the VQE algorithm converges to as the primary indicator of fitness, but we also add a term which describes the complexity of the circuit to encourage simpler circuits.
@@ -31,7 +31,7 @@ We create a random population of circuits, which then go through the evolutionar
 3. Crossover: The remaining circuits are randomly assigned into pairs and their representations are mixed, to form new circuits.
 4. Mutation: The entire population undergoes modification, where 20% of their genetic representation is randomly changed.
 
-![fig2](img/whatisgenetic3.png)
+![fig2](../img/whatisgenetic3.png)
 
 These steps are repeated for multiple generations. With each generation, the population becomes more similar to the specific circuits that succeeded in the previous generation. The random mutations help explore the space of possible modifications, allowing the population to escape local minima.
 
@@ -40,11 +40,11 @@ Important to notice about this implementation is that essentially the only thing
 ## Variational algorithms
 A recent paper on applying genetic algorithm to VQE problems has found that genetic algorithms are not very effective for the classical optimization part of VQE, when compared to the standard methods such as BFGS
 
-![fig3](img/paper.png)
+![fig3](../img/paper.png)
 
 For this reason, we would like to keep the classical optimization part the same, and just use the genetic algorithm to search for the correct *structure* of the circuit. We do this by not just encoding standard quantum gates into our genetic representation, but also parameterized gates. To our knowledge, this has not been done before and we could consider our implementation as an extension of the publication below, for which no code has been made publicly available.
 
-![fig4](img/paper2.png)
+![fig4](../img/paper2.png)
 
 The overall workflow is then to
 1. Generate parameterized circuits with each generation
@@ -60,7 +60,7 @@ The overall workflow is then to
 ## Results
 We have implemented examples for the hydrogen and water molecules, and it can be clearly seen that the average fitness of the population increases with each generation and that the energy which the VQE converges to for the best circuit approaches the true answer. You can see it in action below.
 
-![gif](img/Peek%202022-07-27%2009-55.gif)
+![gif](../img/Peek%202022-07-27%2009-55.gif)
 
 As it can be seen, the genetic algorithm generates all sorts of circuits until it starts to discover chemistry-informed gates such as single-excitation and double-excitation, which of course perform excellently for finding the ground state energy of the molecule and thus achieve a high fitness score. Important to understand is that the algorithm was able to discover these gates on its own, we have not instructed it to do so and randomly selecting those gates is just as likely as randomly selecting any other.
 
