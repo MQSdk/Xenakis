@@ -3,18 +3,6 @@ import pennylane as qml
 import random
 
 
-def run_vqe(cost_fn, initial_theta, max_iterations=150, conv_tol=1e-9):
-    energy = 1e9
-    theta = qml.numpy.array(initial_theta, requires_grad=True)
-    opt = qml.AdamOptimizer()
-    for i in range(max_iterations):
-        prev_energy = energy
-        theta, energy = opt.step_and_cost(cost_fn, theta)
-        if np.abs(energy - prev_energy) < conv_tol:
-            break
-    return energy, theta
-
-
 def string_to_gate(string, n_qubits):
     # first six bits of string define gate time, rest define which qubits to apply to
     n_params = 0
@@ -234,18 +222,6 @@ def init_agents(population, length):
     return [Agent(length) for _ in range(population)]
 
 
-def fitness(agents, n_qubits, n_gates, circuit_to_cost_fn, initial_state):
-    for agent in agents:
-        genome = agent.string
-        circuit, n_params, total_complexity = genome_to_circuit(genome, n_qubits, n_gates, initial_state)
-        cost_fn = circuit_to_cost_fn(circuit)
-        initial_theta = np.zeros(n_params)
-        energy, _ = run_vqe(cost_fn, initial_theta)
-        agent.fitness = -energy - total_complexity * 0.0001
-        agent.energy = energy
-    return agents
-
-
 def selection(agents):
     agents = sorted(agents, key=lambda agent: agent.fitness, reverse=True)
     print('\n'.join(map(str, agents)))
@@ -281,13 +257,11 @@ def mutation(agents, str_len):
     return agents
 
 
-def ga(population, generations, threshold, str_len, n_qubits, n_gates, circuit_to_cost_fn, initial_state=None):
-    if initial_state is None:
-        initial_state = np.zeros(n_qubits)
+def ga(population, generations, threshold, str_len, fitness):
     agents = init_agents(population, str_len)
     for generation in range(generations):
         print("Generation: ", str(generation))
-        agents = fitness(agents, n_qubits, n_gates, circuit_to_cost_fn, initial_state)
+        agents = fitness(agents)
         agents = selection(agents)
         agents = crossover(agents, str_len, population)
         agents = mutation(agents, str_len)
