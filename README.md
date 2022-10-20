@@ -4,6 +4,10 @@
 <img src="img/Xenakis_Logo_horizontal.png" width="500"/>
 </p>
 
+## Documentation
+
+https://github.com/MQSdk/Xenakis/tree/master/doc
+
 ## Dependencies
 
 ## Installation
@@ -22,7 +26,7 @@ https://github.com/ahmedfgad/GeneticAlgorithmPython
 
 ## Tests
 
-## Comparison to other tools, packages, competitors
+## Comparison to other tools/packages
 
 ### Classiq
 
